@@ -31,13 +31,21 @@ namespace Base64EncoderDecoder
 
         public static string Base64Decode(string base64EncodedData)
         {
-            int mod4 = base64EncodedData.Length % 4;
-            if(mod4 > 0)
+            try
             {
-                base64EncodedData += new string('=', 4 - mod4);
+                int mod4 = base64EncodedData.Length % 4;
+                if (mod4 > 0)
+                {
+                    base64EncodedData += new string('=', 4 - mod4);
+                }
+                var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+                return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
             }
-            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
-            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return String.Empty;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -54,8 +62,21 @@ namespace Base64EncoderDecoder
 
         public static string Base64Encode(string plainText)
         {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
+            try
+            {
+                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+                return System.Convert.ToBase64String(plainTextBytes);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return String.Empty;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.richTextBox2.Text = null;
         }
     }
 }
